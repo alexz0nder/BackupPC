@@ -15,7 +15,8 @@ function main() {
         export gitlab_container=$(/usr/bin/ssh -q -p 2222 -l backuppc $gitlab_hostname "sudo /bin/docker ps | grep gitlab") && \
         export gitlab_container_id=$(echo $gitlab_container | /usr/bin/awk '{print $1}') && \
         /usr/bin/ssh -q -p 2222 -l backuppc $gitlab_hostname sudo /bin/docker exec -i $gitlab_container_id gitlab-rake gitlab:backup:create && \
-        /usr/bin/ssh -q -p 2222 -l backuppc $gitlab_hostname sudo /bin/docker exec -i $gitlab_container_id chmod -R 644 /var/opt/gitlab/git-backups/
+        /usr/bin/ssh -q -p 2222 -l backuppc $gitlab_hostname sudo /bin/docker exec -i $gitlab_container_id chmod -R 777 /var/opt/gitlab/git-backups && \
+        /usr/bin/ssh -q -p 2222 -l backuppc $gitlab_hostname sudo /bin/docker exec -i $gitlab_container_id chmod -R -x+X /var/opt/gitlab/git-backups
     fi
 }
 
